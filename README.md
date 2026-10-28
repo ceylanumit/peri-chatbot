@@ -1,33 +1,52 @@
-# PeriChatbot
+# Peri Chatbot
 
-PeriChatbot, Türkçe doğal dil işleme tekniklerini kullanan bir Python uygulamasıdır. Bu sohbet botu, kullanıcının girdiğini analiz ederek uygun bir yanıt üretir.
+A Turkish-language retrieval-based chatbot for a cafe information use case. The application matches user queries against a local knowledge base using TF-IDF vectors and cosine similarity.
 
-## Örnek
+## Overview
 
-Aşağıdaki örnekte, PeriChatbot'un çalıştırılmasına ilişkin bir ekran görüntüsü bulunmaktadır:
+The project demonstrates a text-processing pipeline that converts Turkish input into a searchable representation and retrieves a predefined response. It runs locally through a command-line interface.
 
-![PeriChatbot Örneği](ornek.png)
+## Processing Pipeline
 
-## Kurulum
+1. Load question-response pairs from `veriler.json`.
+2. Normalize text, tokenize input and remove Turkish stopwords.
+3. Apply Turkish stemming with Snowball.
+4. Build TF-IDF vectors with Scikit-learn.
+5. Rank stored queries by cosine similarity and return the corresponding response.
 
-1. Bu depoyu klonlayın veya ZIP olarak indirin.
-2. Bu projeyi çalıştırmak için aşağıdaki Python kütüphanelerini yüklemeniz gerekir:
-- `json`: JSON verilerini okumak için.
-- `nltk`: Doğal dil işleme işlemleri için.
-- `scikit-learn`: Metin vektörizasyonu ve benzerlik hesaplamaları için.
-- `numpy`: Matematiksel işlemler yapmak için.
-- `snowballstemmer`: Türkçe metinlerde kök bulmak için.
+## Technology Stack
 
-3. `veriler.json` dosyasını projenizin kök dizinine ekleyin. Bu dosya, sohbet botunun eğitim verilerini içerir.
+Python · NLTK · Scikit-learn · NumPy · Snowball Stemmer
 
-## Kullanım
+## Setup
 
-1. Python'u kullanarak `main.py` dosyasını çalıştırın:
+```bash
+git clone https://github.com/ceylanumit/peri-chatbot.git
+cd peri-chatbot
+python -m venv .venv
+```
 
-    ```
-    python main.py
-    ```
+Activate the virtual environment, then install the dependencies:
 
-2. Program başladığında, bir hoş geldiniz mesajıyla karşılanacaksınız.
-3. Ardından, sohbet botu size yanıt verebileceği bir şeyler sorabilir.
-4. İlgili bir giriş yapın ve botun yanıtını gözlemleyin.
+```bash
+python -m pip install nltk scikit-learn numpy snowballstemmer
+python -m nltk.downloader punkt punkt_tab stopwords
+```
+
+Keep `veriler.json` in the same working directory as `main.py`. The JSON file contains records with `user_input` and `bot_response` fields.
+
+## Usage
+
+```bash
+python main.py
+```
+
+Enter a Turkish query at the prompt. Use `Ctrl+C` to end the session.
+
+## Example
+
+![Peri Chatbot command-line interface](ornek.png)
+
+## Current Scope
+
+Responses are retrieved from the supplied dataset rather than generated. The current implementation returns the closest match even when similarity is below the configured threshold.
